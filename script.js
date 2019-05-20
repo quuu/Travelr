@@ -3,9 +3,9 @@ var mymap = L.map('mapid').setView([51.505, -0.09], 2);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 10,
-  id: 'mapbox.streets',
-  continuousWorld: false,
-  noWrap: true,
+    id: 'mapbox.streets',
+    continuousWorld: false,
+    noWrap: true,
     accessToken: config.MAPBOX_KEY
 }).addTo(mymap);
 
@@ -28,3 +28,11 @@ function createMarkerFromLocation(loc){
 }
 
 createMarkerFromLocation("Toronto").then(function(result){ console.log(result); } );
+function w3_open() {
+  document.getElementById("mySidebar").style.width = "100%";
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
