@@ -15,6 +15,34 @@ var marker = L.marker([51.5, -100]).addTo(mymap);
 
 var opencageKey = config.OPENCAGEDATA_KEY;
 
+// Vue integration
+var app = new Vue({
+  el: '#app',
+  data: {
+    where: "Somewhere",
+    when: "Sometime",
+    who: "People",
+    activities: [ "none" ]
+  }
+})
+
+// function responsible for fetching the json contents of the file
+// TODO, add parameter to read in file by name instead of hard coded
+// returns: json object
+function getJSONContents(){
+
+  return fetch('/sample.json')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson){
+      return myJson;
+    });
+}
+
+var places;
+
+getJSONContents().then(function(result) { places = result;});
 
 // function that get's triggered when a marker is clicked
 // responsible for updating the vue application with new marker information
@@ -22,6 +50,19 @@ function updateDescription(e) {
 
 
   console.log("wow you clicked " + e.target.customName);
+  console.log(places);
+  for(let i=0;i<places.places.length;i++){
+    console.log(app);
+    if(places.places[i].name == e.target.customName){
+      const found = places.places[i];
+
+      app.where = found.name;
+      app.when = found.when;
+      app.who = found.who;
+      break;
+    }
+
+  }
 
 
 
@@ -46,20 +87,4 @@ createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.
 
 
 
-fetch('/sample.json')
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson){
-    console.log(myJson);
-  });
-
-
-// Vue integration
-var app = new Vue({
-  el: '#app',
-  data: {
-    message: "Hello Vue!"
-  }
-})
 
