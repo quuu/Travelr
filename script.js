@@ -1,3 +1,5 @@
+
+
 var mymap = L.map('mapid').setView([51.505, -0.09], 2);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -11,8 +13,19 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 var marker = L.marker([51.5, -100]).addTo(mymap);
 
-
 var opencageKey = config.OPENCAGEDATA_KEY;
+
+
+// function that get's triggered when a marker is clicked
+// responsible for updating the vue application with new marker information
+function updateDescription(e) {
+
+
+  console.log("wow you clicked " + e.target.customName);
+
+
+
+}
 
 function createMarkerFromLocation(loc){
 
@@ -21,26 +34,32 @@ function createMarkerFromLocation(loc){
       return response.json();
     })
     .then(function(myJson) {
-      L.marker([myJson.features[0].geometry.coordinates[1], myJson.features[0].geometry.coordinates[0]]).addTo(mymap);
+      let mark = L.marker([myJson.features[0].geometry.coordinates[1], myJson.features[0].geometry.coordinates[0]]).addTo(mymap).on('click', updateDescription);
+      mark.customName = loc;
       return myJson.features[0].geometry.coordinates;
     });
 
 }
 
-createMarkerFromLocation("Toronto").then(function(result){ console.log(result); } );
-function w3_open() {
-  document.getElementById("mySidebar").style.width = "100%";
-  document.getElementById("mySidebar").style.display = "block";
-}
+//initial marker
+createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.log(result); } );
 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-}
 
-$(document).ready(function () {
 
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
+fetch('/sample.json')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson){
+    console.log(myJson);
+  });
 
-});
+
+// Vue integration
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: "Hello Vue!"
+  }
+})
+
