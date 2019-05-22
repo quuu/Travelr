@@ -40,9 +40,30 @@ function getJSONContents(){
     });
 }
 
+function createMarkerFromLocation(loc){
+
+  return fetch('https://api.opencagedata.com/geocode/v1/geojson?q='+loc+'&key='+opencageKey)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      let mark = L.marker([myJson.features[0].geometry.coordinates[1], myJson.features[0].geometry.coordinates[0]]).addTo(mymap).on('click', updateDescription);
+      mark.customName = loc;
+      return myJson.features[0].geometry.coordinates;
+    });
+
+}
 var places;
 
-getJSONContents().then(function(result) { places = result;});
+getJSONContents().then(function(result) {
+  places = result;
+
+  for(let i=0;i<places.places.length;i++){
+    //console.log(places.places[i]);
+
+    createMarkerFromLocation(places.places[i].name, opencageKey).then(function(result){ console.log(result); });
+  }
+});
 
 // function that get's triggered when a marker is clicked
 // responsible for updating the vue application with new marker information
@@ -66,22 +87,12 @@ function updateDescription(e) {
 
 }
 
-function createMarkerFromLocation(loc){
 
-  return fetch('https://api.opencagedata.com/geocode/v1/geojson?q='+loc+'&key='+opencageKey)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      let mark = L.marker([myJson.features[0].geometry.coordinates[1], myJson.features[0].geometry.coordinates[0]]).addTo(mymap).on('click', updateDescription);
-      mark.customName = loc;
-      return myJson.features[0].geometry.coordinates;
-    });
 
-}
+
 
 //initial marker
-createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.log(result); } );
+//createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.log(result); } );
 
 
 
