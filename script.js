@@ -1,22 +1,26 @@
 
 
-var mymap = L.map('mapid').setView([51.505, -0.09], 2);
+/*
+ * initial map displaying and getting the user API keys
+ */
+const mymap = L.map('mapid').setView([51.505, -0.09], 2);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 10,
-    id: 'mapbox.streets',
-    continuousWorld: false,
-    noWrap: true,
-    accessToken: config.MAPBOX_KEY
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  maxZoom: 10,
+  minZoom: 2,
+  id: 'mapbox.light',
+  continuousWorld: false,
+  noWrap: true,
+  accessToken: config.MAPBOX_KEY
 }).addTo(mymap);
 
-var marker = L.marker([51.5, -100]).addTo(mymap);
 
-var opencageKey = config.OPENCAGEDATA_KEY;
+// for reverse location lookup
+const opencageKey = config.OPENCAGEDATA_KEY;
 
 // Vue integration
-var app = new Vue({
+let app = new Vue({
   el: '#app',
   data: {
     where: "Somewhere",
@@ -44,16 +48,15 @@ function getJSONContents(){
 function updateDescription(e) {
 
 
-  console.log("wow you clicked " + e.target.customName);
   for(let i=0;i<places.places.length;i++){
     if(places.places[i].name == e.target.customName){
-      console.log(places.places[i].name + " " + e.target.customName);
       const found = places.places[i];
-      console.log(found);
 
+      //actually updating the vue data
       app.where = found.name;
       app.when = found.when;
       app.who = found.reason;
+      app.activities = found.activities;
 
       break;
     }
@@ -61,6 +64,17 @@ function updateDescription(e) {
   }
 
 }
+
+
+
+/**
+ *  use the reverse location lookup to get the coordinates of the loc in geoJSON
+ *    format
+ *
+ *  adds a marker to that returned lat and long with custom field `customName`
+ *
+ *  adds event listener for on click to `updateDescription()`
+ */
 function createMarkerFromLocation(loc){
 
   return fetch('https://api.opencagedata.com/geocode/v1/geojson?q='+loc+'&key='+opencageKey)
@@ -74,7 +88,16 @@ function createMarkerFromLocation(loc){
     });
 
 }
-var places;
+
+
+/**
+ *
+ *  Saves the locations from the json to variable places
+ *    upon saving, displays all the information onto the map
+ *
+ *
+ */
+let places;
 
 getJSONContents().then(function(result) {
   places = result;
@@ -82,8 +105,15 @@ getJSONContents().then(function(result) {
   for(let i=0;i<places.places.length;i++){
     console.log(places.places[i].name);
 
-    createMarkerFromLocation(places.places[i].name, opencageKey).then(function(result){ console.log(result); });
+    createMarkerFromLocation(places.places[i].name).then(function(result){ console.log(result); });
   }
+
+  // set the default location to be the first entry of the json
+  app.where = places.places[0].name;
+  app.when = places.places[0].when;
+  app.who = places.places[0].reason;
+
+  app.activities = places.places[0].activities;
 });
 
 
@@ -92,10 +122,15 @@ getJSONContents().then(function(result) {
 
 
 
-//initial marker
-createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.log(result); } );
+/**
+ *  function that will look at the pictures directory at the root
+ *  of the project, and associate them with specific locations as
+ *  mentioned by the user in the json
+ *
+ */
+function getPictures(){
 
 
 
 
-
+}
