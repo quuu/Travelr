@@ -39,7 +39,29 @@ function getJSONContents(){
       return myJson;
     });
 }
+// function that get's triggered when a marker is clicked
+// responsible for updating the vue application with new marker information
+function updateDescription(e) {
 
+  app.where = "a";
+
+  console.log("wow you clicked " + e.target.customName);
+  for(let i=0;i<places.places.length;i++){
+    if(places.places[i].name == e.target.customName){
+      console.log(places.places[i].name + " " + e.target.customName);
+      const found = places.places[i];
+      console.log(found);
+
+      //     app.where = found.name;
+      //app.when = found.when;
+      //app.who = found.reason;
+
+      break;
+    }
+
+  }
+
+}
 function createMarkerFromLocation(loc){
 
   return fetch('https://api.opencagedata.com/geocode/v1/geojson?q='+loc+'&key='+opencageKey)
@@ -65,27 +87,7 @@ getJSONContents().then(function(result) {
   }
 });
 
-// function that get's triggered when a marker is clicked
-// responsible for updating the vue application with new marker information
-function updateDescription(e) {
 
-
-  console.log("wow you clicked " + e.target.customName);
-  console.log(places);
-  for(let i=0;i<places.places.length;i++){
-    console.log(app);
-    if(places.places[i].name == e.target.customName){
-      const found = places.places[i];
-
-      app.where = found.name;
-      app.when = found.when;
-      app.who = found.who;
-      break;
-    }
-
-  }
-
-}
 
 
 
@@ -96,13 +98,6 @@ function updateDescription(e) {
 
 
 
-fetch('/sample.json')
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson){
-    console.log(myJson);
-  });
 
 
 // Vue integration
