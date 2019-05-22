@@ -39,33 +39,28 @@ function getJSONContents(){
       return myJson;
     });
 }
-
-var places;
-
-getJSONContents().then(function(result) { places = result;});
-
 // function that get's triggered when a marker is clicked
 // responsible for updating the vue application with new marker information
 function updateDescription(e) {
 
 
   console.log("wow you clicked " + e.target.customName);
-  console.log(places);
   for(let i=0;i<places.places.length;i++){
-    console.log(app);
     if(places.places[i].name == e.target.customName){
+      console.log(places.places[i].name + " " + e.target.customName);
       const found = places.places[i];
+      console.log(found);
 
       app.where = found.name;
       app.when = found.when;
-      app.who = found.who;
+      app.who = found.reason;
+
       break;
     }
 
   }
 
 }
-
 function createMarkerFromLocation(loc){
 
   return fetch('https://api.opencagedata.com/geocode/v1/geojson?q='+loc+'&key='+opencageKey)
@@ -79,26 +74,28 @@ function createMarkerFromLocation(loc){
     });
 
 }
+var places;
+
+getJSONContents().then(function(result) {
+  places = result;
+
+  for(let i=0;i<places.places.length;i++){
+    console.log(places.places[i].name);
+
+    createMarkerFromLocation(places.places[i].name, opencageKey).then(function(result){ console.log(result); });
+  }
+});
+
+
+
+
+
+
 
 //initial marker
 createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.log(result); } );
 
 
 
-fetch('/sample.json')
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson){
-    console.log(myJson);
-  });
 
-
-// Vue integration
-var app = new Vue({
-  el: '#app',
-  data: {
-    message: "Hello Vue!"
-  }
-})
 
