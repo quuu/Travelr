@@ -4,18 +4,15 @@
       "name": "Tokyo",
       "when": "Summer 2018",
       "reason": "Family Vacation",
-      "highlights": [
-        {
-          "where": "Meiji Shrine",
-          "what": "visited nice shrine"
-        }
+      "activities": [
+        "meiji shrine", "sample activity"
       ]
     },  
     {
       "name": "Toronto",
       "when": "Winter 2018",
       "reason": "Friends",
-      "highlights": [
+      "activities": [
         "Aquarium", "Rebel"
       ]
     },
@@ -23,21 +20,21 @@
       "name": "Antarctica",
       "when": "Never",
       "reason": "Friends",
-      "highlights": [
+      "activities": [
       ]
     },
     {
       "name": "China",
       "when": "Winter 2018",
       "reason": "Friends",
-      "highlights": [
+      "activities": [
       ]
     },
     {
       "name": "Norway",
       "when": "Winter 2018",
       "reason": "Friends",
-      "highlights": [
+      "activities": [
       ]
     }
   ]

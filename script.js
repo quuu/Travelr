@@ -6,12 +6,13 @@
 const mymap = L.map('mapid').setView([51.505, -0.09], 2);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 10,
-    id: 'mapbox.streets',
-    continuousWorld: false,
-    noWrap: true,
-    accessToken: config.MAPBOX_KEY
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+  maxZoom: 10,
+  minZoom: 2,
+  id: 'mapbox.light',
+  continuousWorld: false,
+  noWrap: true,
+  accessToken: config.MAPBOX_KEY
 }).addTo(mymap);
 
 
@@ -55,6 +56,7 @@ function updateDescription(e) {
       app.where = found.name;
       app.when = found.when;
       app.who = found.reason;
+      app.activities = found.activities;
 
       break;
     }
@@ -110,6 +112,8 @@ getJSONContents().then(function(result) {
   app.where = places.places[0].name;
   app.when = places.places[0].when;
   app.who = places.places[0].reason;
+
+  app.activities = places.places[0].activities;
 });
 
 
@@ -125,6 +129,8 @@ getJSONContents().then(function(result) {
  *
  */
 function getPictures(){
+
+
 
 
 }
