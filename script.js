@@ -43,7 +43,6 @@ function getJSONContents(){
 // responsible for updating the vue application with new marker information
 function updateDescription(e) {
 
-  app.where = "a";
 
   console.log("wow you clicked " + e.target.customName);
   for(let i=0;i<places.places.length;i++){
@@ -52,9 +51,9 @@ function updateDescription(e) {
       const found = places.places[i];
       console.log(found);
 
-      //     app.where = found.name;
-      //app.when = found.when;
-      //app.who = found.reason;
+      app.where = found.name;
+      app.when = found.when;
+      app.who = found.reason;
 
       break;
     }
@@ -81,7 +80,7 @@ getJSONContents().then(function(result) {
   places = result;
 
   for(let i=0;i<places.places.length;i++){
-    //console.log(places.places[i]);
+    console.log(places.places[i].name);
 
     createMarkerFromLocation(places.places[i].name, opencageKey).then(function(result){ console.log(result); });
   }
@@ -94,17 +93,9 @@ getJSONContents().then(function(result) {
 
 
 //initial marker
-//createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.log(result); } );
+createMarkerFromLocation("Toronto", opencageKey).then(function(result){ console.log(result); } );
 
 
 
 
-
-// Vue integration
-var app = new Vue({
-  el: '#app',
-  data: {
-    message: "Hello Vue!"
-  }
-})
 
