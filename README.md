@@ -1,7 +1,7 @@
 # Travelr
-Light-weight single page used to display important locations on an interactive map (travels/vacations) with descriptions and pictures
+Light-weight single page used to display important locations on an interactive map (travels/vacations) with descriptions
 
-Not meant to be a stand alone application, meant to be an addition to an existing webpage 
+Not meant to be a stand alone application, designed to be an addition to an existing webpage 
 
 
 ## Frameworks:
