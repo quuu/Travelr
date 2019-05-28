@@ -31,4 +31,4 @@ Not meant to be a stand alone application, designed to be an addition to an exis
 
 # Screenshots:
 
-- TODO
+![Sample Data](/screenshots/ss.png)
