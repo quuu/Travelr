@@ -7,7 +7,7 @@ const mymap = L.map('mapid').setView([51.505, -0.09], 2);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  maxZoom: 10,
+  maxZoom: 2,
   minZoom: 2,
   id: 'mapbox.light',
   continuousWorld: false,
@@ -15,6 +15,16 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: config.MAPBOX_KEY
 }).addTo(mymap);
 
+
+//prevent the map from being dragged outside of the view
+const southWest = L.latLng(-89.98155760646617, -180);
+const northEast = L.latLng(89.99346179538875, 180);
+const bounds = L.latLngBounds(southWest, northEast);
+
+mymap.setMaxBounds(bounds);
+mymap.on('drag', function() {
+    mymap.panInsideBounds(bounds, { animate: false });
+});
 
 // for reverse location lookup
 const opencageKey = config.OPENCAGEDATA_KEY;
